@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <title>Harta Amintirilor 💜</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fefefe;
+    }
+
+    #introPage, #mapPage {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      padding: 20px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 1s ease;
+    }
+
+    #introPage {
+      background: linear-gradient(135deg, #e7d6ff, #f9f0ff);
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2em;
+      margin-bottom: 20px;
+      color: #5e2b97;
+    }
+
+    p {
+      max-width: 600px;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    .button {
+      margin-top: 30px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      background-color: #7f5af0;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    .button:hover {
+      background-color: #6547c6;
+    }
+
+    #map {
+      height: 100%;
+      width: 100%;
+    }
+
+    .leaflet-popup-content {
+      text-align: center;
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .popup-img {
+      width: 200px;
+      border-radius: 10px;
+      margin: 0 auto 10px;
+      display: block;
+    }
+
+    .map-controls {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 1001;
+    }
+
+    .map-button {
+      padding: 10px 14px;
+      background-color: #7f5af0;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    .map-button:hover {
+      background-color: #5e3de3;
+    }
+
+    .top-message {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 18px;
+      font-weight: bold;
+      background-color: #ffffffcc;
+      padding: 8px 16px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Pagina de introducere -->
+<div id="introPage">
+  <h1>Un gând pentru tine</h1>
+  <p>
+    Am adunat câteva amintiri care pentru mine au însemnat ceva și sper și pentru tine. Nu știu cum le-ai simțit tu, dar m-am gândit că poate ți-ar plăcea să le revezi.<br><br>
+    Nu e nimic complicat aici, doar câteva locuri, zâmbete și momente care au fost reale. Atât.<br><br>
+    Dacă simți să le vezi, sunt aici. Dacă nu, e ok și așa.<br><br>
+    <strong>Cu gând bun,</strong><br>
+    <em>același ME.</em><br><br>
+    🎉 ¡Feliz cumpleaños, mi Alma!
+  </p>
+  <button class="button" onclick="showMap()">Vezi amintirile</button>
+</div>
+
+<!-- Pagina cu harta -->
+<div id="mapPage" style="display:none;">
+  <div class="top-message">¡Feliz cumpleaños, mi Alma!</div>
+  <div id="map"></div>
+  <div class="map-controls">
+    <button class="map-button" onclick="goBack()">Înapoi</button>
+    <button class="map-button" onclick="window.open('https://www.youtube.com/watch?v=sAWi9tbstFw&list=RDsAWi9tbstFw&start_radio=1', '_blank')">Melodia noastră</button>
+    <button class="map-button" onclick="centerMap()">Centrează harta</button>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+  function showMap() {
+    document.getElementById("introPage").style.display = "none";
+    document.getElementById("mapPage").style.display = "block";
+    map.invalidateSize();
+  }
+
+  function goBack() {
+    document.getElementById("mapPage").style.display = "none";
+    document.getElementById("introPage").style.display = "flex";
+  }
+
+  function centerMap() {
+    map.setView([45.2, 25.3], 7);
+  }
+
+  var map = L.map('map').setView([45.2, 25.3], 7);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(map);
+
+  const locations = [
+    {
+      name: "1. Bucov",
+      coords: [44.9335, 26.0647],
+      img: "https://i.postimg.cc/DZBptHmJ/IMG-20220513-WA0001.jpg",
+      msg: "Revederea scoate la iveală copilul din noi, cel care încă iubește leagănele și cerul senin."
+    },
+    {
+      name: "2. Mogoșoaia",
+      coords: [44.5303, 25.9938],
+      img: "https://i.postimg.cc/8P39p24L/IMG-20220522-WA0007.jpg",
+      msg: "Cele mai frumoase zile sunt cele pe care nu le planifici, dar care îți rămân în suflet kilometru cu kilometru."
+    },
+    {
+      name: "3. Urlați",
+      coords: [45.0500, 26.2167],
+      img: "https://i.postimg.cc/mZVGspKS/IMG-20220604-WA0000.jpg",
+      msg: "Dorința de a fi împreună naște cele mai simple și prețioase clipe."
+    },
+    {
+      name: "4. Grădina de Lavandă",
+      coords: [45.07951935971346, 25.953744555618893],
+      img: "https://i.postimg.cc/PJfsD1vZ/IMG-20220702-WA0013.jpg",
+      msg: "Uneori, în parfumul lavandei, regăsești puterea de a zâmbi din nou și de a străluci în orice fotografie chiar si atunci cand nu iti arati chipul."
+    },
+    {
+      name: "5. Câmpina",
+      coords: [45.1289, 25.7345],
+      img: "https://i.postimg.cc/GtgNsVCw/IMG-20220528-WA0022.jpg",
+      msg: "Când inima vrea să păstreze clipa, aparatul de fotografiat devine un visător."
+    },
+    {
+      name: "6. Lacul Paltinul",
+      coords: [45.1721, 25.7958],
+      img: "https://i.postimg.cc/NjZcnyZq/IMG-20220709-WA0023.jpg",
+      msg: "Sinceritatea se așază cel mai bine lângă ape liniștite și priviri ce nu mint."
+    },
+    {
+      name: "7. Sinaia",
+      coords: [45.3319, 25.5681],
+      img: "https://i.postimg.cc/BZCJvnPH/IMG-20220709-WA0043.jpg",
+      msg: "Un oraș ca o promisiune: al frumuseții, al naturii și al urșilor prietenoși care păzesc amintirile noastre."
+    },
+    {
+      name: "8. Castelul de Lut",
+      coords: [45.7360, 24.6325],
+      img: "https://i.postimg.cc/TwVfgR78/IMG-20220731-WA0042.jpg",
+      msg: "Zânele chiar există – le recunoști după felul în care te fac să crezi din nou în povești."
+    },
+    {
+      name: "9. Sibiu",
+      coords: [45.7930, 24.1371],
+      img: "https://i.postimg.cc/KzBvf7YH/IMG-20220731-WA0139.jpg",
+      msg: "Există locuri care nu sunt doar frumoase, ci mai mult decât perfectul – acolo, timpul se oprește să respire."
+    },
+    {
+      name: "10. Veliko Tarnovo",
+      coords: [43.0812, 25.6290],
+      img: "https://i.postimg.cc/1XDngh64/IMG-20220829-WA0008.jpg",
+      msg: "Frumusețea nu are granițe – ea trăiește în zâmbetul ei, străbate străzi vechi și colorează fiecare clipă cu prezența ei."
+    },
+    {
+      name: "11. Cascada Hotnitsa",
+      coords: [43.1505, 25.5756],
+      img: "https://i.postimg.cc/Y9hQCsbm/IMG-20220829-WA0009-1.jpg",
+      msg: "Când emoția, lumina și momentul se aliniază, se naște fotografia aceea pe care o simți, nu doar o vezi."
+    }
+  ];
+
+  locations.forEach(loc => {
+    L.marker(loc.coords).addTo(map).bindPopup(
+      `<strong>${loc.name}</strong><br>
+       <img class="popup-img" src="${loc.img}" alt=""><br>
+       <em>${loc.msg}</em>`
+    );
+  });
+</script>
+
+</body>
+</html>
